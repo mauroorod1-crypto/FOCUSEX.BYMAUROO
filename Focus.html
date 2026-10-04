@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FOCUSEX — Focus. Progress. Become.</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="Style.css">
+</head>
+
+<body>
+
+<section id="login-page" class="login-page" aria-labelledby="login-title">
+    <div class="login-card">
+        <div class="brand login-brand">
+            <div class="brand-logo">F</div>
+            <div>
+                <h1>FOCUSEX</h1>
+                <span>Focus. Progress. Become.</span>
+            </div>
+        </div>
+
+        <h2 id="login-title">Tu progreso, en tu cuenta</h2>
+        <p class="login-description">Inicia sesión o crea una cuenta para sincronizar tus datos.</p>
+
+        <form id="login-form">
+            <label for="login-email">Correo electrónico</label>
+            <input id="login-email" type="email" autocomplete="email" required>
+
+            <label for="login-password">Contraseña</label>
+            <input id="login-password" type="password" autocomplete="current-password" minlength="6" required>
+
+            <button class="primary-btn full-btn" type="submit">Iniciar sesión</button>
+            <button id="signup-button" class="text-btn signup-btn" type="button">Registrarse</button>
+        </form>
+
+        <p id="login-message" class="login-message" role="status" aria-live="polite"></p>
+    </div>
+</section>
+
+<div class="app" hidden>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-logo">F</div>
+
+            <div>
+                <h1>FOCUSEX</h1>
+                <span>Focus. Progress. Become.</span>
+            </div>
+        </div>
+
+        <nav class="navigation">
+
+            <button class="nav-item active" data-section="dashboard">
+                <span>⌂</span>
+                Dashboard
+            </button>
+
+            <button class="nav-item" data-section="habits">
+                <span>✓</span>
+                Hábitos
+            </button>
+
+            <button class="nav-item" data-section="tasks">
+                <span>☷</span>
+                Tareas
+            </button>
+
+            <button class="nav-item" data-section="agenda">
+                <span>◫</span>
+                Agenda
+            </button>
+
+            <button class="nav-item" data-section="analytics">
+                <span>⌁</span>
+                Analytics
+            </button>
+
+            <button class="nav-item" data-section="achievements">
+                <span>★</span>
+                Logros
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="mini-card">
+                <span class="mini-label">Racha actual</span>
+                <strong id="sidebarStreak">0 días</strong>
+            </div>
+
+            <div class="mini-card">
+                <span class="mini-label">XP total</span>
+                <strong id="sidebarXP">0 XP</strong>
+            </div>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+        <!-- HEADER -->
+        <header class="topbar">
+
+            <div>
+                <p class="eyebrow">PERSONAL PROGRESS SYSTEM</p>
+                <h2 id="pageTitle">Dashboard</h2>
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="date-box">
+                    <span>Hoy</span>
+                    <strong id="todayDate"></strong>
+                </div>
+
+                <div class="avatar">
+                    F
+                </div>
+
+                <button id="signout-button" class="text-btn" type="button">Cerrar sesión</button>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= DASHBOARD ================= -->
+
+        <section class="page active" id="dashboard">
+
+            <div class="welcome">
+
+                <div>
+                    <p class="eyebrow">TU PROGRESO</p>
+                    <h3>Construye tu mejor versión.</h3>
+                    <p>
+                        Cada hábito completado es un paso más.
+                    </p>
+                </div>
+
+                <button class="primary-btn" id="quickAddBtn">
+                    + Añadir
+                </button>
+
+            </div>
+
+
+            <!-- STATS -->
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <span class="stat-label">Progreso de hoy</span>
+                    <strong id="todayProgress">0%</strong>
+                    <div class="progress-line">
+                        <div id="todayProgressBar"></div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <span class="stat-label">Racha</span>
+                    <strong id="currentStreak">0 días</strong>
+                    <small>mantén el ritmo</small>
+                </div>
+
+                <div class="stat-card">
+                    <span class="stat-label">XP</span>
+                    <strong id="totalXP">0</strong>
+                    <small>experiencia total</small>
+                </div>
+
+                <div class="stat-card">
+                    <span class="stat-label">Nivel</span>
+                    <strong id="currentLevel">1</strong>
+                    <small id="currentRank">NOVICE</small>
+                </div>
+
+            </div>
+
+
+            <!-- MAIN GRID -->
+
+            <div class="dashboard-grid">
+
+                <!-- PROGRESS -->
+
+                <div class="panel large-panel">
+
+                    <div class="panel-header">
+                        <div>
+                            <p class="eyebrow">EVOLUCIÓN</p>
+                            <h3>Tu progreso</h3>
+                        </div>
+
+                        <label class="sr-only" for="chartRange">Período del gráfico de progreso</label>
+                        <select id="chartRange">
+                            <option value="7">7 días</option>
+                            <option value="14">14 días</option>
+                            <option value="30">30 días</option>
+                        </select>
+                    </div>
+
+                    <div class="chart-container">
+                        <svg id="progressChart" viewBox="0 0 700 280" preserveAspectRatio="none"></svg>
+                    </div>
+
+                </div>
+
+
+                <!-- RANK -->
+
+                <div class="panel rank-panel">
+
+                    <p class="eyebrow">RANGO ACTUAL</p>
+
+                    <div class="rank-icon" id="rankIcon">
+                        N
+                    </div>
+
+                    <h3 id="rankName">NOVICE</h3>
+
+                    <p id="rankDescription">
+                        Tu camino acaba de comenzar.
+                    </p>
+
+                    <div class="rank-progress">
+
+                        <div class="rank-progress-text">
+                            <span id="rankXP">0 XP</span>
+                            <span id="nextRankXP">500 XP</span>
+                        </div>
+
+                        <div class="progress-line">
+                            <div id="rankProgressBar"></div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- TODAY -->
+
+            <div class="dashboard-grid bottom-grid">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <p class="eyebrow">HOY</p>
+                            <h3>Hábitos</h3>
+                        </div>
+
+                        <button class="text-btn" data-section="habits">
+                            Ver todos →
+                        </button>
+
+                    </div>
+
+                    <div id="dashboardHabits" class="item-list"></div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+                            <p class="eyebrow">PENDIENTES</p>
+                            <h3>Tareas</h3>
+                        </div>
+
+                        <button class="text-btn" data-section="tasks">
+                            Ver todas →
+                        </button>
+
+                    </div>
+
+                    <div id="dashboardTasks" class="item-list"></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= HABITS ================= -->
+
+        <section class="page" id="habits">
+
+            <div class="section-heading">
+
+                <div>
+                    <p class="eyebrow">CONSISTENCIA</p>
+                    <h3>Hábitos</h3>
+                    <p>Construye acciones que se conviertan en resultados.</p>
+                </div>
+
+                <button class="primary-btn" id="addHabitBtn">
+                    + Nuevo hábito
+                </button>
+
+            </div>
+
+            <div class="habit-summary">
+
+                <div class="summary-card">
+                    <span>Total</span>
+                    <strong id="habitTotal">0</strong>
+                </div>
+
+                <div class="summary-card">
+                    <span>Completados</span>
+                    <strong id="habitCompleted">0</strong>
+                </div>
+
+                <div class="summary-card">
+                    <span>Consistencia</span>
+                    <strong id="habitConsistency">0%</strong>
+                </div>
+
+            </div>
+
+            <div class="habit-section">
+                <div class="panel-header">
+                    <div>
+                        <p class="eyebrow">PARA HOY</p>
+                        <h3>Hábitos de hoy</h3>
+                    </div>
+                </div>
+                <div id="habitsTodayList" class="item-list"></div>
+            </div>
+
+            <div class="habit-section">
+                <div class="panel-header">
+                    <div>
+                        <p class="eyebrow">GESTIÓN</p>
+                        <h3>Todos los hábitos</h3>
+                    </div>
+                </div>
+            <div id="habitsList" class="cards-list"></div>
+            </div>
+
+            <div class="panel history-panel">
+                <div class="panel-header">
+                    <div>
+                        <p class="eyebrow">CONSTANCIA</p>
+                        <h3>Historial de hábitos</h3>
+                    </div>
+                </div>
+                <div id="habitHistory" class="habit-history"></div>
+            </div>
+
+        </section>
+
+
+        <!-- ================= TASKS ================= -->
+
+        <section class="page" id="tasks">
+
+            <div class="section-heading task-section-heading">
+
+                <div>
+                    <p class="eyebrow">EJECUCIÓN</p>
+                    <h3>Tareas</h3>
+                    <p>Convierte tus objetivos en acciones.</p>
+                </div>
+
+                <select id="taskFilter" aria-label="Filtrar tareas">
+                    <option value="all">Todas</option>
+                    <option value="pending">Pendientes</option>
+                    <option value="completed">Completadas</option>
+                    <option value="high">Alta prioridad</option>
+                    <option value="medium">Media prioridad</option>
+                    <option value="low">Baja prioridad</option>
+                    <option value="overdue">Vencidas</option>
+                </select>
+
+                <button class="primary-btn" id="addTaskBtn">
+                    + Nueva tarea
+                </button>
+
+            </div>
+
+            <div class="habit-summary tasks-summary">
+
+                <div class="summary-card">
+                    <span>Total</span>
+                    <strong id="taskTotal">0</strong>
+                </div>
+
+                <div class="summary-card">
+                    <span>Pendientes</span>
+                    <strong id="taskPending">0</strong>
+                </div>
+
+                <div class="summary-card">
+                    <span>Completadas</span>
+                    <strong id="taskCompleted">0</strong>
+                </div>
+
+                <div class="summary-card">
+                    <span>Progreso</span>
+                    <strong id="taskProgress">0%</strong>
+                    <small id="taskProgressCount">0 / 0 completadas</small>
+                </div>
+
+                <div class="summary-card">
+                    <span>Racha de tareas</span>
+                    <strong id="taskStreak">0 días</strong>
+                </div>
+
+                <div class="summary-card">
+                    <span>Vencidas</span>
+                    <strong id="taskOverdue">0</strong>
+                </div>
+
+                <div class="summary-card">
+                    <span>Prioridad alta</span>
+                    <strong id="taskHighPriority">0</strong>
+                </div>
+
+            </div>
+
+            <div class="task-groups" id="tasksList">
+                <section>
+                    <div class="panel-header task-group-heading">
+                        <h3>Pendientes</h3>
+                        <span id="pendingTaskCount">0</span>
+                    </div>
+                    <div id="pendingTasksList" class="cards-list"></div>
+                </section>
+                <section>
+                    <div class="panel-header task-group-heading">
+                        <h3>Completadas</h3>
+                        <span id="completedTaskCount">0</span>
+                    </div>
+                    <div id="completedTasksList" class="cards-list"></div>
+                </section>
+            </div>
+
+        </section>
+
+
+        <!-- ================= AGENDA ================= -->
+
+        <section class="page" id="agenda">
+
+            <div class="section-heading">
+
+                <div>
+                    <p class="eyebrow">ORGANIZACIÓN</p>
+                    <h3>Agenda</h3>
+                    <p>Visualiza tus días y mantén el control.</p>
+                </div>
+
+            </div>
+
+            <div class="calendar-panel">
+
+                <div class="calendar-header">
+
+                    <button id="prevMonth">←</button>
+
+                    <h3 id="calendarTitle"></h3>
+
+                    <button id="nextMonth">→</button>
+
+                </div>
+
+                <div class="calendar-weekdays">
+
+                    <span>L</span>
+                    <span>M</span>
+                    <span>X</span>
+                    <span>J</span>
+                    <span>V</span>
+                    <span>S</span>
+                    <span>D</span>
+
+                </div>
+
+                <div id="calendar" class="calendar"></div>
+
+            </div>
+
+            <div class="panel agenda-day-panel">
+                <div class="panel-header">
+                    <div>
+                        <p class="eyebrow">ACTIVIDADES</p>
+                        <h3 id="agendaDayTitle">Hoy</h3>
+                    </div>
+                    <button class="text-btn" id="agendaTodayBtn">Ir a hoy</button>
+                </div>
+                <div id="agendaDayActivities" class="item-list"></div>
+            </div>
+
+        </section>
+
+
+        <!-- ================= ANALYTICS ================= -->
+
+        <section class="page" id="analytics">
+
+            <div class="section-heading">
+
+                <div>
+                    <p class="eyebrow">DATOS</p>
+                    <h3>Analytics</h3>
+                    <p>Conoce tu evolución.</p>
+                </div>
+
+            </div>
+
+            <p class="analytics-data-note">
+                Agenda aporta fechas planificadas; solo se cuentan tareas y hábitos realmente completados.
+                Esta versión no tiene un registro independiente de eventos completados.
+            </p>
+
+            <div class="analytics-grid">
+
+                <div class="analytics-card">
+                    <span>Productividad</span>
+                    <strong id="averageProgress">0%</strong>
+                    <small>40% tareas · 40% hábitos · 20% días activos</small>
+                </div>
+
+                <div class="analytics-card">
+                    <span>Tareas completadas</span>
+                    <strong id="analyticsTaskPeriod">0</strong>
+                    <small id="analyticsTaskPeriodRate">0% del periodo</small>
+                </div>
+
+                <div class="analytics-card">
+                    <span>Racha actual</span>
+                    <strong id="analyticsCurrentStreak">—</strong>
+                    <small>Mejor: <span id="bestStreak">—</span></small>
+                </div>
+
+                <div class="analytics-card">
+                    <span>XP del periodo · tareas y hábitos</span>
+                    <strong id="analyticsXP">0</strong>
+                    <small>Total acumulado: <span id="analyticsTotalXP">0</span></small>
+                </div>
+
+                <div class="analytics-card">
+                    <span>Cumplimiento de hábitos</span>
+                    <strong id="analyticsConsistency">—</strong>
+                    <small><span id="analyticsHabitCompletions">0</span> completaciones</small>
+                </div>
+
+            </div>
+
+            <div class="panel task-analytics-panel">
+                <div class="panel-header">
+                    <div>
+                        <p class="eyebrow">TAREAS</p>
+                        <h3>Rendimiento y prioridades</h3>
+                    </div>
+                </div>
+                <div class="analytics-grid task-analytics-grid">
+                    <div class="analytics-card">
+                        <span>Tareas activas</span>
+                        <strong id="analyticsTaskTotal">0</strong>
+                    </div>
+                    <div class="analytics-card">
+                        <span>Completadas en el periodo</span>
+                        <strong id="analyticsTaskCompleted">0</strong>
+                    </div>
+                    <div class="analytics-card">
+                        <span>Pendientes ahora</span>
+                        <strong id="analyticsTaskPending">0</strong>
+                    </div>
+                    <div class="analytics-card">
+                        <span>Finalización del periodo</span>
+                        <strong id="analyticsTaskRate">0%</strong>
+                    </div>
+                    <div class="analytics-card">
+                        <span>Vencidas ahora</span>
+                        <strong id="analyticsTaskOverdue">0</strong>
+                    </div>
+                    <div class="analytics-card">
+                        <span>XP de tareas en el periodo</span>
+                        <strong id="analyticsTaskXP">0</strong>
+                    </div>
+                </div>
+                <div class="priority-analytics">
+                    <div class="priority-analytics-heading">
+                        <strong>Completadas / tareas activas por prioridad</strong>
+                        <span>La prioridad refleja el valor actual de cada tarea.</span>
+                    </div>
+                    <div class="priority-analytics-grid">
+                        <div class="priority-analytics-card">
+                            <span>Alta</span>
+                            <strong id="analyticsPriorityHigh">0 / 0</strong>
+                        </div>
+                        <div class="priority-analytics-card">
+                            <span>Media</span>
+                            <strong id="analyticsPriorityMedium">0 / 0</strong>
+                        </div>
+                        <div class="priority-analytics-card">
+                            <span>Baja</span>
+                            <strong id="analyticsPriorityLow">0 / 0</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel habit-analytics-panel">
+                <div class="panel-header">
+                    <div>
+                        <p class="eyebrow">HÁBITOS</p>
+                        <h3>Consistencia por hábito</h3>
+                    </div>
+                </div>
+                <div class="analytics-grid habit-analytics-grid">
+                    <div class="analytics-card">
+                        <span>Hábitos activos</span>
+                        <strong id="analyticsActiveHabits">0</strong>
+                    </div>
+                    <div class="analytics-card">
+                        <span>Completaciones</span>
+                        <strong id="analyticsHabitTotal">0</strong>
+                    </div>
+                    <div class="analytics-card">
+                        <span>Cumplimiento</span>
+                        <strong id="analyticsHabitRate">—</strong>
+                    </div>
+                    <div class="analytics-card">
+                        <span>XP de hábitos</span>
+                        <strong id="analyticsHabitXP">0</strong>
+                    </div>
+                    <div class="analytics-card">
+                        <span>Racha actual / mejor por hábito</span>
+                        <strong id="analyticsHabitStreak">—</strong>
+                        <small>Las rachas individuales aparecen en el ranking</small>
+                    </div>
+                </div>
+                <div id="analyticsHabitRanking" class="analytics-ranking"></div>
+            </div>
+
+            <div class="panel analytics-chart-panel">
+
+                <div class="panel-header">
+
+                    <div>
+                        <p class="eyebrow">HISTORIAL</p>
+                        <h3 id="analyticsChartTitle">Actividad diaria</h3>
+                    </div>
+                    <div class="analytics-chart-controls">
+                        <select id="analyticsMetric" aria-label="Métrica del gráfico">
+                            <option value="activity">Actividad</option>
+                            <option value="xp">XP</option>
+                            <option value="tasks">Tareas</option>
+                            <option value="habits">Hábitos</option>
+                        </select>
+                        <select id="analyticsRange" aria-label="Período de estadísticas">
+                            <option value="7">7 días</option>
+                            <option value="30" selected>30 días</option>
+                            <option value="90">90 días</option>
+                            <option value="all">Todo el tiempo</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="chart-container large-chart">
+                    <svg id="analyticsChart" viewBox="0 0 900 350" preserveAspectRatio="none"></svg>
+                </div>
+                <p id="analyticsChartSummary" class="analytics-chart-summary"></p>
+
+            </div>
+
+            <div class="analytics-insights-grid">
+                <div class="panel analytics-insight-panel">
+                    <div class="panel-header">
+                        <div>
+                            <p class="eyebrow">TENDENCIA</p>
+                            <h3>Primera mitad vs. segunda mitad</h3>
+                        </div>
+                    </div>
+                    <strong id="analyticsTrend" class="analytics-insight-value">Datos insuficientes</strong>
+                    <p id="analyticsTrendDetail" class="analytics-insight-detail"></p>
+                </div>
+                <div class="panel analytics-insight-panel">
+                    <div class="panel-header">
+                        <div>
+                            <p class="eyebrow">MEJORES DÍAS</p>
+                            <h3>Mayor actividad registrada</h3>
+                        </div>
+                    </div>
+                    <div id="analyticsBestDays" class="analytics-best-days"></div>
+                </div>
+            </div>
+
+            <div class="panel analytics-comparison-panel">
+                <div class="panel-header">
+                    <div>
+                        <p class="eyebrow">COMPARACIÓN</p>
+                        <h3>Periodo actual vs. periodo anterior</h3>
+                    </div>
+                </div>
+                <p id="analyticsComparisonNote" class="analytics-insight-detail"></p>
+                <div class="analytics-comparison-grid">
+                    <div><span>Tareas</span><strong id="analyticsCompareTasks">—</strong></div>
+                    <div><span>Hábitos</span><strong id="analyticsCompareHabits">—</strong></div>
+                    <div><span>XP</span><strong id="analyticsCompareXP">—</strong></div>
+                    <div><span>Actividad</span><strong id="analyticsCompareActivity">—</strong></div>
+                </div>
+            </div>
+
+            <div class="panel heatmap-panel">
+                <div class="panel-header">
+                    <div>
+                        <p class="eyebrow">ACTIVIDAD DIARIA</p>
+                        <h3>Días con actividad</h3>
+                    </div>
+                </div>
+                <div id="analyticsHeatmap" class="heatmap"></div>
+                <p id="analyticsEmptyState" class="analytics-empty-state" hidden></p>
+            </div>
+
+        </section>
+
+
+        <!-- ================= ACHIEVEMENTS ================= -->
+
+        <section class="page" id="achievements">
+
+            <div class="section-heading">
+
+                <div>
+                    <p class="eyebrow">RECOMPENSAS</p>
+                    <h3>Logros</h3>
+                    <p>Pequeñas victorias. Grandes cambios.</p>
+                </div>
+
+            </div>
+
+            <div class="analytics-grid achievement-summary">
+                <div class="analytics-card">
+                    <span>Desbloqueados</span>
+                    <strong id="unlockedAchievements">0</strong>
+                </div>
+                <div class="analytics-card">
+                    <span>XP de logros</span>
+                    <strong id="achievementXP">0</strong>
+                </div>
+            </div>
+
+            <div id="achievementsList" class="achievements-grid"></div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- MODAL -->
+
+<div class="modal-overlay" id="modalOverlay">
+
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+
+        <button class="modal-close" id="modalClose" aria-label="Cerrar diálogo">×</button>
+
+        <p class="eyebrow">NUEVO ELEMENTO</p>
+
+        <h3 id="modalTitle">Añadir</h3>
+
+        <form id="itemForm">
+
+            <label for="itemName">
+                Nombre
+                <input id="itemName" type="text" required placeholder="Ej. Estudiar 1 hora">
+            </label>
+
+            <label for="itemXP">
+                XP
+                <input id="itemXP" type="number" min="0" value="50" required>
+            </label>
+
+            <label id="habitFrequencyField" for="habitFrequency" hidden>
+                Frecuencia
+                <select id="habitFrequency">
+                    <option value="daily">Diario</option>
+                    <option value="weekly">Semanal</option>
+                </select>
+            </label>
+
+            <label id="habitWeeklyTargetField" for="habitWeeklyTarget" hidden>
+                Veces por semana
+                <input id="habitWeeklyTarget" type="number" min="1" max="7" value="1">
+            </label>
+
+            <label id="habitDescriptionField" for="habitDescription" hidden>
+                Descripción (opcional)
+                <textarea id="habitDescription" rows="3" maxlength="240" placeholder="Añade un poco de contexto"></textarea>
+            </label>
+
+            <label id="habitGoalField" for="habitGoalTarget" hidden>
+                Objetivo (opcional)
+                <input id="habitGoalTarget" type="number" min="0" step="any" placeholder="Ej. 60">
+            </label>
+
+            <label id="taskPriorityField" for="taskPriority" hidden>
+                Prioridad
+                <select id="taskPriority">
+                    <option value="low">Baja</option>
+                    <option value="medium" selected>Media</option>
+                    <option value="high">Alta</option>
+                </select>
+            </label>
+
+            <label id="taskDescriptionField" for="taskDescription" hidden>
+                Descripción (opcional)
+                <textarea id="taskDescription" rows="3" maxlength="500" placeholder="Añade detalles de la tarea"></textarea>
+            </label>
+
+            <label id="taskDueDateField" for="taskDueDate" hidden>
+                Fecha de vencimiento
+                <input id="taskDueDate" type="date">
+            </label>
+
+            <button class="primary-btn full-btn" type="submit">
+                <span id="itemSubmitText">Crear</span>
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="src/config/supabase-config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="src/modules/validators.js"></script>
+<script src="src/modules/storage.js"></script>
+<script src="src/modules/supabase.js"></script>
+<script src="App.js"></script>
+
+</body>
+</html>
